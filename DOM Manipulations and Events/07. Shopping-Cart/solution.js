@@ -30,6 +30,8 @@ function solve() {
       }
 
       textArea.value += `You bought ${list.join(', ')} for ${totalPrice.toFixed(2)}.\n`;
+      document.querySelector('.shopping-cart').removeEventListener('click', add);
+      document.querySelector('.checkout').removeEventListener('click', total);
    }
 
 }
