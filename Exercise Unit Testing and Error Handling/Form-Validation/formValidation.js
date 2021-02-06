@@ -10,7 +10,7 @@ function validate() {
     let emailIsValid;
     let passwordIsValid;
     let confirmPasswordIsValid;
-    let companyNumberIsValid;
+    let companyNumberIsValid = true;
 
     checkbox.addEventListener('change', (ev) => {
 
@@ -30,7 +30,7 @@ function validate() {
         event.preventDefault();
 
         //username
-        if (!(/^[a-zA-Z0-9]{3,20}$/gm).test(username.value)) {
+        if (!(/^([A-Za-z0-9]){3,20}$/gm).test(username.value)) {
             username.style.borderColor = 'red'
         } else {
             usernameIsValid = true;
@@ -38,7 +38,7 @@ function validate() {
         }
 
         //email
-        if (!(/^\w*@\w*\.[\w\.]*$/gm).test(email.value)) {
+        if (!(/^(.+@(.+)?\.(.+)?)$/gm).test(email.value)) {
             email.style.borderColor = 'red'
         } else {
             emailIsValid = true;
@@ -46,7 +46,7 @@ function validate() {
         }
 
         //password
-        if (!(/^\w{5,15}$/gm).test(password.value)) {
+        if (!(/^(\w{5,15})$/gm).test(password.value)) {
             password.style.borderColor = 'red';
         } else {
             passwordIsValid = true;
@@ -54,7 +54,7 @@ function validate() {
         }
 
         //confirmPassword
-        if (!(/^\w{5,15}$/gm).test(confirmPassword.value)) {
+        if (!(/^(\w{5,15})$/gm).test(confirmPassword.value)) {
             confirmPassword.style.borderColor = 'red';
         } else {
             confirmPasswordIsValid = true;
@@ -70,8 +70,8 @@ function validate() {
         if (checkbox.checked) {
             if (Number(number.value) <= 9999 && Number(number.value) >= 1000) {
                 number.style.border = 'none';
-                companyNumberIsValid = true;
             } else {
+                companyNumberIsValid = false;
                 number.style.borderColor = 'red';
             }
         }
