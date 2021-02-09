@@ -17,12 +17,13 @@ describe('String Builder tests', () => {
             let instance = new StringBuilder('hello')
             expect(instance._stringArray).to.be.an('array')
         })
-        it('StringBuilder type', function () {
-            expect(typeof StringBuilder).to.equal('function');
-        });
     })
 
     describe('append', function () {
+        it('convert passed string to array', function () {
+            let instance = new StringBuilder('hello')
+            expect(instance._stringArray).to.be.an('array')
+        })
         it('return string `hello, there`', function () {
             let instance = new StringBuilder('hello')
             instance.append(', there')
@@ -39,6 +40,10 @@ describe('String Builder tests', () => {
     })
 
     describe('prepend', function () {
+        it('convert passed string to array', function () {
+            let instance = new StringBuilder('hello')
+            expect(instance._stringArray).to.be.an('array')
+        })
         it('return string `User, hello`', function () {
             let instance = new StringBuilder('hello')
             instance.prepend('User, ')
@@ -49,15 +54,13 @@ describe('String Builder tests', () => {
             expect(() => instance.prepend(3)).to.throw(TypeError)
         });
 
-        it('Test if added at the beginning', function () {
-            let instance = new StringBuilder('hello')
-            instance.prepend('a');
-            expect(instance._stringArray[3]).to.equal('l');
-        });
-
     })
 
     describe('insertAt', function () {
+        it('convert passed string to array', function () {
+            let instance = new StringBuilder('hello')
+            expect(instance._stringArray).to.be.an('array')
+        })
         it('return string `heyoullo`', function () {
             let instance = new StringBuilder('hello')
             instance.insertAt('you', 2)
@@ -76,7 +79,7 @@ describe('String Builder tests', () => {
             expect(instance.toString()).to.equal('heo')
             expect(instance.toString()).to.have.lengthOf(3)
         })
-        it('return string `empty`', function () {
+        it('return string `heo`', function () {
             let instance = new StringBuilder('hello')
             instance.remove(0, 5)
             expect(instance.toString()).to.be.empty;
