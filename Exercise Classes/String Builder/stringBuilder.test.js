@@ -20,10 +20,6 @@ describe('String Builder tests', () => {
     })
 
     describe('append', function () {
-        it('convert passed string to array', function () {
-            let instance = new StringBuilder('hello')
-            expect(instance._stringArray).to.be.an('array')
-        })
         it('return string `hello, there`', function () {
             let instance = new StringBuilder('hello')
             instance.append(', there')
@@ -40,10 +36,6 @@ describe('String Builder tests', () => {
     })
 
     describe('prepend', function () {
-        it('convert passed string to array', function () {
-            let instance = new StringBuilder('hello')
-            expect(instance._stringArray).to.be.an('array')
-        })
         it('return string `User, hello`', function () {
             let instance = new StringBuilder('hello')
             instance.prepend('User, ')
@@ -57,10 +49,6 @@ describe('String Builder tests', () => {
     })
 
     describe('insertAt', function () {
-        it('convert passed string to array', function () {
-            let instance = new StringBuilder('hello')
-            expect(instance._stringArray).to.be.an('array')
-        })
         it('return string `heyoullo`', function () {
             let instance = new StringBuilder('hello')
             instance.insertAt('you', 2)
