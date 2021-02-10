@@ -1,30 +1,34 @@
 function solve() {
-  let correctAnswers = ['onclick', 'JSON.stringify()', 'A programming API for HTML and XML documents'];
-  let rightAnswers = 0;
-  let i = 0;
-  
-  Array.from(document.getElementsByClassName('answer-text')).forEach((li) => {
-    li.addEventListener('click', () => {
-      if (correctAnswers.includes(li.textContent)) {
-        rightAnswers++
-      };
+  let count = 0;
+  let index = 0;
+  let result = document.getElementById('results')
+  let rightAnswers = ['onclick', 'JSON.stringify()', 'A programming API for HTML and XML documents']
+  Array.from(document.getElementsByClassName('answer-text')).forEach(el => {
 
-      let currentSection = document.querySelectorAll("section")[i];
-      currentSection.style.display = "none";
+    el.addEventListener('click', () => {
+      if (rightAnswers.includes(el.textContent)) {
+        count++;
 
-      if (document.querySelectorAll("section")[i + 1] !=  undefined) {
-        let nextSection = document.querySelectorAll("section")[i + 1];
-        nextSection.style.display = "block";
-        i++
-      } else {
-        document.getElementById('results').style.display = 'block'
-        if (rightAnswers < 3) {
-          document.querySelector('.results-inner > h1').textContent = `You have ${rightAnswers} right answers`
-        } else {
-          document.querySelector('.results-inner > h1').textContent = `You are recognized as top JavaScript fan!"`
-        }
       }
 
+      let currentSection = document.getElementsByTagName('section')[index]
+      currentSection.style.display = 'none'
+
+      let nextSection = document.getElementsByTagName('section')[index + 1]
+      if(nextSection != undefined) {
+        nextSection.style.display = 'block'
+      } else {
+        currentSection.setAttribute('class', 'hidden')
+        result.style.display = 'block'
+        if(count == 3 ) {
+          result.querySelector('.results-inner > h1').innerHTML = `You are recognized as top JavaScript fan!`
+        } else {
+          result.querySelector('.results-inner > h1').innerHTML = `You have ${count} right answers`
+        }
+      }
+      index++
     })
+
+
   })
 }
