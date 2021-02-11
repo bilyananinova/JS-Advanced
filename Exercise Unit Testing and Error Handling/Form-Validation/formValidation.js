@@ -1,18 +1,20 @@
 function validate() {
-    let username = document.getElementById('username');
-    let email = document.getElementById('email');
-    let password = document.getElementById('password');
-    let confirmPassword = document.getElementById('confirm-password');
-    let checkbox = document.getElementById('company')
-    let number = document.getElementById('companyNumber');
 
-    let usernameIsValid;
-    let emailIsValid;
-    let passwordIsValid;
-    let confirmPasswordIsValid;
-    let companyNumberIsValid = true;
+    let username = document.querySelector('#username');
+    let email = document.querySelector('#email');
+    let password = document.querySelector('#password');
+    let confirmPassword = document.querySelector('#confirm-password');
+    let company = document.querySelector('#company');
+    let companyNumber = document.querySelector('#companyNumber');
+    let submit = document.querySelector('#submit');
 
-    checkbox.addEventListener('change', (ev) => {
+    let usernameValid = true;
+    let emailValid = true;
+    let passwordValid = true;
+    let confirmPasswordValid = true;
+    let companyNumberValid = true;
+
+    company.addEventListener('change', (ev) => {
 
         if (ev.target.checked) {
             document.getElementById('companyInfo').style.display = 'block';
@@ -23,65 +25,64 @@ function validate() {
 
     });
 
-    document.getElementById('submit').addEventListener('click', onClick)
-
-
-    function onClick(event) {
+    submit.addEventListener('click', (event) => {
         event.preventDefault();
 
         //username
         if (!(/^([A-Za-z0-9]){3,20}$/gm).test(username.value)) {
-            username.style.borderColor = 'red'
+            username.style.borderColor = 'red';
+            usernameValid = false;
         } else {
-            usernameIsValid = true;
-            username.style.border = 'none'
+            username.style.border = 'none';
         }
 
         //email
         if (!(/^(.+@(.+)?\.(.+)?)$/gm).test(email.value)) {
-            email.style.borderColor = 'red'
+            email.style.borderColor = 'red';
+            emailValid = false;
         } else {
-            emailIsValid = true;
-            email.style.border = 'none'
+            email.style.border = 'none';
         }
 
         //password
         if (!(/^(\w{5,15})$/gm).test(password.value)) {
             password.style.borderColor = 'red';
+            passwordValid = false;
         } else {
-            passwordIsValid = true;
             password.style.border = 'none';
         }
 
         //confirmPassword
         if (!(/^(\w{5,15})$/gm).test(confirmPassword.value)) {
             confirmPassword.style.borderColor = 'red';
+            confirmPasswordValid = false;
         } else {
-            confirmPasswordIsValid = true;
             confirmPassword.style.border = 'none';
         }
 
-        if (password.value !== confirmPassword.value || !password.value || !confirmPassword.value) {
+        if (password.value !== confirmPassword.value) {
             password.style.borderColor = 'red';
             confirmPassword.style.borderColor = 'red';
+            confirmPasswordValid = false;
         }
 
-        //checkbox
-        if (checkbox.checked) {
-            if (Number(number.value) <= 9999 && Number(number.value) >= 1000) {
-                number.style.border = 'none';
+
+        if (company.checked) {
+            if (companyNumber.value >= 1000 && companyNumber.value <= 9999) {
+                companyNumberValid = true;
             } else {
-                companyNumberIsValid = false;
-                number.style.borderColor = 'red';
+                companyNumber.style.borderColor = 'red'
+                companyNumberValid = false;
+            }
+            if (usernameValid && emailValid && passwordValid && confirmPasswordValid && companyNumberValid) {
+                document.querySelector('#valid').style.display = 'block'
+            }
+        } else {
+            if (usernameValid && emailValid && passwordValid && confirmPasswordValid) {
+                document.querySelector('#valid').style.display = 'block'
             }
         }
 
-
-        if (usernameIsValid && emailIsValid && passwordIsValid && confirmPasswordIsValid && companyNumberIsValid) {
-            document.getElementById('valid').style.display = 'block'
-        }
-
-
-    }
+    })
 
 }
