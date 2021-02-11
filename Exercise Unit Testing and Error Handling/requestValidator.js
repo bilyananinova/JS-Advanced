@@ -9,10 +9,10 @@ function requestValidator(obj) {
     }
 
     if (obj.version !== 'HTTP/0.9' && obj.version !== 'HTTP/1.0' && obj.version !== 'HTTP/1.1' && obj.version !== 'HTTP/2.0') {
-       throw new Error('Invalid request header: Invalid Version');
+        throw new Error('Invalid request header: Invalid Version');
     }
 
-    if (obj.message == undefined || (/[a-z0-9][^<^>^\^&^,]+/gm).test(obj.message)) {
+    if (obj.message == undefined || !(/^[^<>\\&'"]*$/gm).test(obj.message)) {
         throw new Error('Invalid request header: Invalid Message');
     }
 
@@ -24,15 +24,15 @@ console.log(requestValidator({
     uri: 'svn.public.catalog',
     version: 'HTTP/1.1',
     message: ''
-
 }));
+
 console.log(requestValidator({
     method: 'GET',
     uri: 'svn.public.catalog',
     version: 'HTTP/1.1',
     message: 'asl<pls'
-
 }));
+
 console.log(requestValidator({
     method: 'POST',
     uri: 'home.bash',
