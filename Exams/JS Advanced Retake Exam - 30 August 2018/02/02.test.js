@@ -4,77 +4,91 @@ let assert = require("chai").assert;
 
 describe("HolidayPackage", function () {
     it("constructor", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-        expect(instance.destination = 'Italy').to.equal('Italy');
-        expect(instance.destination = 'Summer').to.equal('Summer');
-        expect(instance._insuranceIncluded == false).to.equal(true);
+        let instance = new HolidayPackage('Italy', 'summer')
+        assert.deepEqual(instance.vacationers, [])
+        assert.deepEqual(instance.destination, 'Italy')
+        assert.deepEqual(instance.season, 'summer')
+        assert.deepEqual(instance.insuranceIncluded, false)
+    });
 
+    it("constructor", function () {
+        assert.equal(HolidayPackage.prototype.vacationers)
+        assert.equal(HolidayPackage.prototype.destination)
+        assert.equal(HolidayPackage.prototype.season)
+        assert.equal(HolidayPackage.prototype.insuranceIncluded)
     });
 
     it("showVacationers", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-        expect(instance.vacationers, 'No vacationers are added yet').to.be.empty;
-        instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev'];
-        expect(instance.showVacationers()).to.equal(`Vacationers:\n${instance.vacationers.join("\n")}`)
+        let instance = new HolidayPackage('Italy', 'summer')
+
+        assert.equal(instance.showVacationers(), 'No vacationers are added yet')
+
+        instance.vacationers = ['a', 'b', 'c']
+        instance.showVacationers();
+        assert.equal(instance.showVacationers(), 'Vacationers:\na\nb\nc')
 
     });
 
     it("addVacationer", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
+        let instance = new HolidayPackage('Italy', 'summer')
+        instance.addVacationer('Pesho Peshov')
+        assert.deepEqual(instance.vacationers, ['Pesho Peshov'])
 
-        expect(() => instance.addVacationer(2)).to.throw('Vacationer name must be a non-empty string');
-        expect(() => instance.addVacationer(' ')).to.throw('Vacationer name must be a non-empty string');
-        expect(() => instance.addVacationer('Petar Petrov Petrov')).to.throw('Name must consist of first name and last name');
+        assert.throw(() => instance.addVacationer(5), 'Vacationer name must be a non-empty string')
+        assert.throw(() => instance.addVacationer(' '), 'Vacationer name must be a non-empty string')
+        assert.throw(() => instance.addVacationer(' '), 'Vacationer name must be a non-empty string')
 
-    });
-
-    it("addVacationer", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-
-        instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev'];
-        expect(instance.vacationers).to.have.lengthOf(3);
+        assert.throw(() => instance.addVacationer('Pesho'), 'Name must consist of first name and last name')
 
     });
 
-    it("insuranceIncluded", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-        expect(() => instance.insuranceIncluded = 'Petar').to.throw('Insurance status must be a boolean');
-        expect(instance.insuranceIncluded = true).to.equal(true);
-    });
-    
+    it("get insuranceIncluded", function () {
+        let instance = new HolidayPackage('Italy', 'summer')
+        assert.equal(instance._insuranceIncluded, false)
 
-    it("generateHolidayPackage", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-
-        expect(() => instance.generateHolidayPackage([])).to.throw('There must be at least 1 vacationer added');
-
+        instance._insuranceIncluded = true
+        assert.equal(instance._insuranceIncluded, true)
     });
 
-    it("generateHolidayPackage", function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
+    it("set insuranceIncluded", function () {
+        let instance = new HolidayPackage('Italy', 'summer')
+        assert(() => instance.insuranceIncluded = 'Petar', 'Insurance status must be a boolean');
+        assert.throw(() => instance.insuranceIncluded('Pesho'), TypeError)
+        instance.insuranceIncluded = true
+        assert.equal(instance._insuranceIncluded, true)
 
-        instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev'];
-        expect(instance.vacationers.length * 400).to.equal(1200);
     });
 
     it('generateHolidayPackage', function () {
-        let instance = new HolidayPackage('Italy', 'Summer');
-
-        instance.season = 'Spring';
-        instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev'];
-        expect(instance.vacationers.length * 400).to.equal(1200);
-
-        instance.season = 'Winter';
-        expect(instance.vacationers.length * 400 + 200).to.equal(1400);
-
-        instance.insuranceIncluded = true;
-        expect(instance.vacationers.length * 400 + 200 + 100).to.equal(1500);
-
-        instance.insuranceIncluded = false;
-        expect(instance.vacationers.length * 400 + 200 + 0).to.equal(1400);
+        let instance = new HolidayPackage('Italy', 'summer')
+        assert.throw(() => instance.generateHolidayPackage(), 'There must be at least 1 vacationer added');
     });
 
-    it('print true price add season and insurance', function () {
+    it('generateHolidayPackage', function () {
+        let instance = new HolidayPackage('Italy', 'summer')
+
+        function compare(destination, vacationers, totalPrice) {
+            return [`Holiday Package Generated`,
+                `Destination: '${destination}`,
+                `${vacationers}`,
+                `Price: ${totalPrice}`].join('\n')
+
+        }
+
+        instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev']
+        instance.season = 'Spring';
+        instance.insuranceIncluded = false;
+        let totalPrice = instance.vacationers.length * 400;
+        if (instance.season === "Summer" || instance.season === "Winter") {
+            totalPrice += 200;
+        }
+        totalPrice += instance.insuranceIncluded === true ? 100 : 0;
+
+        expect(instance.generateHolidayPackage() == compare(instance.destination, instance.vacationers, totalPrice)).to.be.equal
+
+    });
+
+    it('toString', function () {
         let instance = new HolidayPackage('Italy', 'Summer');
         instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev']
         let totalPrice = instance.vacationers.length * 400;
@@ -93,7 +107,7 @@ describe("HolidayPackage", function () {
 
     })
 
-    it('print true price without season and insurance', function () {
+    it('toString', function () {
         let instance = new HolidayPackage('Italy', 'Summer');
         instance.vacationers = ['Petar Petrov', 'Ivan Ivanov', 'Georgi Georgiev']
         let totalPrice = instance.vacationers.length * 400;
@@ -109,4 +123,6 @@ describe("HolidayPackage", function () {
             "Price: " + totalPrice)
     })
 
+
 });
+
