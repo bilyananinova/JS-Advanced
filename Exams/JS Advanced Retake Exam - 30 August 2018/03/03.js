@@ -3,7 +3,12 @@ class Vacationer {
 
         this.fullName = fullName;
         this.idNumber = this.generateIDNumber();
-        this.creditCard = this.addCreditCardInfo(creditCard)
+        this.creditCard = {
+            cardNumber: 1111, expirationDate: '', securityNumber: 111
+        };
+        if (creditCard !== undefined) {
+            this.addCreditCardInfo(creditCard);
+        }
         this.wishList = [];
     }
 
@@ -13,80 +18,81 @@ class Vacationer {
 
     set fullName(names) {
         let [firstName, middleName, lastName] = names
-        if (firstName !== '' && middleName !== '' && lastName !== '') {
-            if ((/^[A-Z][a-z]+$/).test(firstName) && (/^[A-Z][a-z]+$/).test(middleName) && (/^[A-Z][a-z]+$/).test(lastName)) {
-                return this._fullName = {
-                    firstName,
-                    middleName,
-                    lastName
-                }
-            } else {
-                throw new Error('Invalid full name')
-            }
-        } else {
+        if (names.length != 3) {
             throw new Error('Name must include first name, middle name and last name')
+
+        }
+        if ((/^[A-Z][a-z]+$/).test(firstName) == false ||
+            (/^[A-Z][a-z]+$/).test(middleName) == false ||
+            (/^[A-Z][a-z]+$/).test(lastName) == false) {
+            throw new Error('Invalid full name')
         }
 
-
+        return this._fullName = { firstName, middleName, lastName }
     }
 
     generateIDNumber() {
-
-        this._idNumber = 231 * this.fullName.firstName.charCodeAt([0]) + 139 * this._fullName.middleName.length
+        let firstNameLetter = this.fullName.firstName.charCodeAt([0])
+        let middleNameLength = this.fullName.middleName.length
+        this.idNumber = 231 * firstNameLetter + 139 * middleNameLength
         let lastChar = this.fullName.lastName[this._fullName.lastName.length - 1]
         let vowels = ["a", "e", "o", "i", "u"]
         if (vowels.includes(lastChar)) {
-            this._idNumber += '8'
+            this.idNumber += '8'
         } else {
-            this._idNumber += '7'
+            this.idNumber += '7'
         }
 
-        return this._idNumber
-
+        return this.idNumber
     }
+
 
     addCreditCardInfo(input) {
-        if (input != undefined) {
-            input = Array.from(input)
-            if (input.length != 3) {
-                throw new Error('Missing credit card information')
-            } else {
-                if (typeof input[0] != 'number' || typeof input[2] != 'number') {
-                    throw new Error('Invalid credit card details')
-                } else {
 
-                    return this._creditCard = {
-                        cardNumber: input[0],
-                        expirationDate: input[1],
-                        securityNumber: input[2],
-                    }
-                }
-            }
+        let [cardNumber, expirationDate, securityNumber] = input
 
+        if (input.length < 3) {
+            throw new Error('Missing credit card information')
         } else {
-            return this._creditCard = {
-                cardNumber: 1111,
-                expirationDate: '',
-                securityNumber: 111,
+            if (typeof cardNumber != 'number' || typeof securityNumber != 'number') {
+                throw new Error('Invalid credit card details')
+            } else {
+                this.creditCard = { cardNumber: cardNumber, expirationDate: expirationDate, securityNumber: securityNumber }
             }
-        }
-
+            return this.creditCard
+        };
     }
+
+
 
     addDestinationToWishList(destination) {
-
         if (this.wishList.includes(destination)) {
             throw new Error('Destination already exists in wishlist')
-        } else {
-            this.wishList.push(destination)
-            this.wishList.sort((a, b) => a.length - b.length)
         }
+
+        this.wishList.push(destination)
+        this.wishList.sort((a, b) => a.length - b.length)
+
+        return this.wishList
     }
+
 
     getVacationerInfo() {
 
-        this.wishList = this.wishList.length > 0 ? this.wishList.join(', ') : 'empty'
-        return `Name: ${this.fullName.firstName} ${this.fullName.middleName} ${this.fullName.lastName}\nID Number: ${this.idNumber}\nWishlist:\n${this.wishList}\nCredit Card:\nCard Number: ${this.creditCard.cardNumber}\nExpiration Date: ${this.creditCard.expirationDate}\nSecurity Number: ${this.creditCard.securityNumber}`
+        let result = [`Name: ${this.fullName.firstName} ${this.fullName.middleName} ${this.fullName.lastName}`]
+        result.push(`ID Number: ${this.idNumber}`)
+        result.push(`Wishlist:`)
+        if (this.wishList.length > 0) {
+            result.push(`${this.wishList.join(', ')}`)
+        } else {
+            result.push(`empty`)
+        }
+        result.push(`Credit Card:`)
+        result.push(`Card Number: ${this.creditCard.cardNumber}`)
+        result.push(`Expiration Date: ${this.creditCard.expirationDate}`)
+        result.push(`Security Number: ${this.creditCard.securityNumber}`)
+
+        return result.join('\n')
     }
 
 }
@@ -120,5 +126,5 @@ console.log(vacationer1.getVacationerInfo());
 console.log(vacationer2.getVacationerInfo());
 
 
-//return `Name: ${this.fullName.firstName} ${this.fullName.middleName} ${this.fullName.lastName}\nID Number: ${this.idNumber}\nWishlist:\n${this.wishList}\nCredit Card:\nCard Number: ${this.creditCard.cardNumber}\nExpiration Date: ${this.creditCard.expirationDate}\nSecurity Number: ${this.creditCard.securityNumber}`
-//return `Name: ${this.fullName.firstName} ${this.fullName.middleName} ${this.fullName.lastName}\nID number: ${this.idNumber}\nWishlist:\n${this.wishList}\nCredit Card:\nCard Number: ${this._creditCard.cardNumber}\nExpiration Date: ${this._creditCard.expirationDate}\nSecurity Number: ${this._creditCard.securityNumber}`
+//return `Name: ${ this.fullName.firstName } ${ this.fullName.middleName } ${ this.fullName.lastName } \nID Number: ${ this.idNumber } \nWishlist: \n${ this.wishList } \nCredit Card: \nCard Number: ${ this.creditCard.cardNumber } \nExpiration Date: ${ this.creditCard.expirationDate } \nSecurity Number: ${ this.creditCard.securityNumber } `
+//return `Name: ${ this.fullName.firstName } ${ this.fullName.middleName } ${ this.fullName.lastName } \nID number: ${ this.idNumber } \nWishlist: \n${ this.wishList } \nCredit Card: \nCard Number: ${ this._creditCard.cardNumber } \nExpiration Date: ${ this._creditCard.expirationDate } \nSecurity Number: ${ this._creditCard.securityNumber } `
